@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RootMAC</string>
+    <string name="app_description">Free Root-Only Android MAC Address Changer</string>
+    
+    <!-- Status messages -->
+    <string name="root_access_granted">Root access granted</string>
+    <string name="root_access_denied">Root access denied</string>
+    <string name="busybox_available">BusyBox available</string>
+    <string name="busybox_not_found">BusyBox not found</string>
+    <string name="iproute2_available">iproute2 available</string>
+    <string name="iproute2_not_found">iproute2 not found</string>
+    
+    <!-- UI Labels -->
+    <string name="system_status">System Status</string>
+    <string name="network_interfaces">Network Interfaces</string>
+    <string name="current_mac">Current MAC</string>
+    <string name="change_mac">Change MAC Address</string>
+    <string name="new_mac_address">New MAC Address</string>
+    <string name="apply_mac_change">Apply MAC Change</string>
+    <string name="restore_original_mac">Restore Original MAC</string>
+    <string name="generate_random_mac">Generate Random MAC</string>
+    <string name="recent_logs">Recent Logs</string>
+    <string name="profiles">Profiles</string>
+    <string name="settings">Settings</string>
+    
+    <!-- Error messages -->
+    <string name="error_invalid_mac">Invalid MAC address format</string>
+    <string name="error_root_required">This app requires root access</string>
+    <string name="error_no_interfaces">No network interfaces found</string>
+</resources>
