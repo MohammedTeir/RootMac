@@ -1,125 +1,181 @@
-# RootMAC - Free Root-Only Android MAC Address Changer
+# RootMAC - Advanced Root-Only Android MAC Address Changer
 
-A comprehensive native Android application for managing and changing MAC addresses on rooted devices. Built with Kotlin and Jetpack Compose.
+<p align="center">
+  <img src="https://img.shields.io/badge/Platform-Android-green?style=for-the-badge&logo=android" alt="Platform">
+  <img src="https://img.shields.io/badge/Language-Kotlin-blue?style=for-the-badge&logo=kotlin" alt="Language">
+  <img src="https://img.shields.io/badge/Status-Beta-yellow?style=for-the-badge" alt="Status">
+  <img src="https://img.shields.io/badge/License-MIT-orange?style=for-the-badge" alt="License">
+</p>
 
-## Features
+<p align="center">
+  <em>A comprehensive native Android application for managing and changing MAC addresses on rooted devices. Built with Kotlin and Jetpack Compose.</em>
+</p>
 
-### Phase 1: Core Engine & Manual Control ✓
-- **Root & Environment Validation**
-  - Detect root access (Magisk/SuperSU)
-  - Verify su permissions
-  - Detect BusyBox and iproute2
-  - Display SELinux mode
-  - Compatibility report
+## 🚀 Overview
 
-- **Interface Detection**
-  - Scan all network interfaces (wlan0, eth0, rmnet*, etc.)
-  - Display current MAC, interface state, IP address
-  - Real-time interface monitoring
+RootMAC is a powerful tool designed for advanced Android users who need to modify their device's MAC address for privacy, security, or network compatibility purposes. This application provides a user-friendly interface to change MAC addresses on rooted Android devices with multiple execution methods and robust error handling.
 
-- **MAC Modification Engine**
-  - Method A: `ip link set` commands
-  - Method B: `ifconfig` commands
-  - Method C: `/sys/class/net/` sysfs
-  - Automatic fallback on failure
+## ✨ Key Features
 
-- **MAC Generator**
-  - Fully random generation
-  - Manual entry with validation
-  - Prevent multicast MAC
-  - Prevent broadcast MAC
+### 🔧 Core Functionality
+- **Root Environment Validation** - Comprehensive detection of root access, busybox, and system utilities
+- **Multi-Method MAC Modification** - Three different approaches for MAC address changes with automatic fallback
+- **Advanced MAC Generation** - Random MAC generation with proper OUI compliance and validation
+- **Secure Original MAC Storage** - Encrypted preservation of original MAC addresses for easy restoration
 
-- **Original MAC Restore**
-  - Encrypted storage of original MAC
-  - One-click restore
-  - Verification after restore
+### 📊 Interface Management
+- **Real-time Interface Detection** - Automatic scanning of all network interfaces (wlan0, eth0, rmnet*, etc.)
+- **Detailed Interface Information** - Current MAC, interface state, and IP address display
+- **Live Monitoring** - Continuous tracking of network interface changes
 
-- **Basic Logging**
-  - Timestamp, old/new MAC
-  - Success/failure status
-  - Shell output capture
+### 🎯 Profile System
+- **Customizable Profiles** - Create, edit, and manage MAC address profiles
+- **Automation Triggers** - Apply MAC changes on boot, network changes, specific SSIDs, and more
+- **Scheduled Rotation** - Automatic MAC rotation at configurable intervals
 
-### Phase 2: Profiles & Automation (In Progress)
-- Profile system with create/edit/delete
-- Automation triggers:
-  - Apply on boot (BOOT_COMPLETED)
-  - Apply on network change
-  - Apply when connected to specific SSID
-  - Apply on WiFi toggle
-  - Apply on airplane mode toggle
-  - Apply on screen off
+### 🛡️ Safety Features
+- **Test Mode** - Countdown timer with automatic revert for safe testing
+- **Connection Failure Recovery** - Auto-revert on network connection failure
+- **Crash-Safe Restore** - Automatic MAC restoration on device boot after crashes
 
-- Scheduled rotation (5min, 15min, 30min, 1hr, custom)
-- Background execution via WorkManager
-- Extended logging with shell output
+## 📋 Prerequisites
 
-### Phase 3: Advanced Randomization & Safety (Planned)
-- Advanced MAC generator with OUI support
-- Test mode with countdown timer
-- Auto-revert on connection failure
-- Crash-safe restore on boot
-- Compatibility detection engine
-- Persistent notification system
+- Rooted Android device (Magisk or SuperSU recommended)
+- Android 9.0 (API 28) or higher
+- BusyBox or iproute2 installed (recommended)
 
-### Phase 4: Polish & Stealth (Planned)
-- Optional stealth mode
-- Hide launcher icon
-- Advanced settings panel
-- UI refinement
-- Architecture stabilization
+## 🛠️ Installation
 
-## Project Structure
+### From Source
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/RootMAC.git
+   cd RootMAC
+   ```
+
+2. **Build the application**
+   ```bash
+   ./gradlew build
+   ```
+
+3. **Install on device**
+   ```bash
+   ./gradlew installDebug
+   # or for release build
+   ./gradlew assembleRelease
+   adb install app/build/outputs/apk/release/app-release.apk
+   ```
+
+### Direct APK Installation
+
+1. Download the latest release APK from the [Releases](https://github.com/yourusername/RootMAC/releases) page
+2. Install on your rooted device
+3. Grant root permissions when prompted
+
+## 🎮 Usage Guide
+
+### Basic MAC Change
+
+1. **Launch the Application** - Open RootMAC on your rooted device
+2. **Select Interface** - Choose the network interface you want to modify (typically wlan0 for WiFi)
+3. **Enter New MAC** - Input the desired MAC address in `XX:XX:XX:XX:XX:XX` format
+4. **Choose Method** - Select from three execution methods (A, B, or C) based on your device compatibility
+5. **Apply Changes** - Tap "Apply MAC Change" and confirm root access
+6. **Verify Success** - Check the logs to confirm the operation completed successfully
+
+### Generate Random MAC
+
+- Use the "Generate Random MAC" button to create a valid, randomly-generated MAC address
+- The application ensures proper MAC address formatting and avoids multicast/broadcast addresses
+
+### Profile Management
+
+- Create profiles for different network environments
+- Set up automation rules to apply MAC changes based on triggers
+- Schedule automatic MAC rotation for enhanced privacy
+
+### Restore Original MAC
+
+- Use "Restore Original MAC" to revert to the MAC address that was present when the app was first run
+- Original MAC addresses are securely stored and can be restored at any time
+
+## ⚙️ Technical Details
+
+### MAC Modification Methods
+
+#### Method A: `ip link` (Recommended)
+```bash
+ip link set dev wlan0 down
+ip link set dev wlan0 address XX:XX:XX:XX:XX:XX
+ip link set dev wlan0 up
+```
+
+#### Method B: `ifconfig`
+```bash
+ifconfig wlan0 down
+ifconfig wlan0 hw ether XX:XX:XX:XX:XX:XX
+ifconfig wlan0 up
+```
+
+#### Method C: `sysfs`
+```bash
+echo XX:XX:XX:XX:XX:XX > /sys/class/net/wlan0/address
+```
+
+### Supported Interfaces
+
+- **WiFi**: `wlan0`, `wlan1`, `wlp*`
+- **Ethernet**: `eth0`, `eth1`, `enp*`
+- **Cellular**: `rmnet*`, `ccmni*`, `v4-rmnet*`
+- **Tethering**: `rndis0`, `usb0`, `bnep*`
+
+## 📁 Project Structure
 
 ```
 RootMAC/
 ├── app/
-│   ├── build.gradle.kts
-│   ├── proguard-rules.pro
+│   ├── build.gradle.kts          # Module build configuration
+│   ├── proguard-rules.pro        # Code obfuscation rules
 │   └── src/
-│       ├── main/
-│       │   ├── AndroidManifest.xml
-│       │   ├── kotlin/com/rootmac/app/
-│       │   │   ├── MainActivity.kt
-│       │   │   ├── core/
-│       │   │   │   ├── RootAccess.kt
-│       │   │   │   └── MacAddressManager.kt
-│       │   │   ├── data/
-│       │   │   │   ├── Repository.kt
-│       │   │   │   └── db/
-│       │   │   │       ├── AppDatabase.kt
-│       │   │   │       ├── Daos.kt
-│       │   │   │       └── Entities.kt
-│       │   │   ├── receiver/
-│       │   │   │   ├── BootCompletedReceiver.kt
-│       │   │   │   └── NetworkStateReceiver.kt
-│       │   │   ├── worker/
-│       │   │   │   ├── BootCompletedWorker.kt
-│       │   │   │   └── NetworkChangeWorker.kt
-│       │   │   ├── ui/
-│       │   │   │   ├── screens/
-│       │   │   │   │   └── MainScreen.kt
-│       │   │   │   ├── theme/
-│       │   │   │   │   ├── Theme.kt
-│       │   │   │   │   ├── Color.kt
-│       │   │   │   │   └── Type.kt
-│       │   │   │   └── viewmodel/
-│       │   │   │       └── RootMACViewModel.kt
-│       │   │   └── BuildConfig.kt
-│       │   └── res/
-│       │       ├── values/
-│       │       │   ├── strings.xml
-│       │       │   ├── colors.xml
-│       │       │   └── themes.xml
-│       │       └── mipmap/
-│       │           └── ic_launcher.png
-│       └── test/
-├── build.gradle.kts
-├── settings.gradle.kts
-├── gradle.properties
-└── README.md
+│       └── main/
+│           ├── AndroidManifest.xml
+│           ├── kotlin/
+│           │   └── com/rootmac/app/
+│           │       ├── MainActivity.kt
+│           │       ├── core/
+│           │       │   ├── RootAccess.kt
+│           │       │   └── MacAddressManager.kt
+│           │       ├── data/
+│           │       │   ├── Repository.kt
+│           │       │   └── db/
+│           │       │       ├── AppDatabase.kt
+│           │       │       ├── Daos.kt
+│           │       │       └── Entities.kt
+│           │       ├── receiver/
+│           │       │   ├── BootCompletedReceiver.kt
+│           │       │   └── NetworkStateReceiver.kt
+│           │       ├── worker/
+│           │       │   ├── BootCompletedWorker.kt
+│           │       │   └── NetworkChangeWorker.kt
+│           │       ├── ui/
+│           │       │   ├── screens/
+│           │       │   │   └── MainScreen.kt
+│           │       │   ├── theme/
+│           │       │   │   ├── Theme.kt
+│           │       │   │   ├── Color.kt
+│           │       │   │   └── Type.kt
+│           │       │   └── viewmodel/
+│           │       │       └── RootMACViewModel.kt
+│           └── res/
+│               └── values/
+├── build.gradle.kts              # Project build configuration
+├── settings.gradle.kts           # Project settings
+├── gradle.properties             # Gradle properties
+└── README.md                     # This file
 ```
 
-## Technology Stack
+## 🏗️ Technology Stack
 
 - **Language**: Kotlin 1.9.22
 - **UI Framework**: Jetpack Compose 1.6.4
@@ -131,220 +187,53 @@ RootMAC/
 - **Target SDK**: 34 (Android 14)
 - **Min SDK**: 28 (Android 9)
 
-## Getting Started
+## 🧪 Testing
 
-### Prerequisites
-
-- Android Studio Hedgehog or later
-- Android SDK 34
-- JDK 17 or later
-- A rooted Android device (Magisk or SuperSU)
-
-### Building
-
-1. **Clone/Extract the project**
-   ```bash
-   cd RootMAC
-   ```
-
-2. **Build the APK**
-   ```bash
-   ./gradlew build
-   ```
-
-3. **Build and run on device**
-   ```bash
-   ./gradlew installDebug
-   ```
-
-4. **Build release APK**
-   ```bash
-   ./gradlew assembleRelease
-   ```
-
-### Installation on Rooted Device
-
-1. Build the release APK:
-   ```bash
-   ./gradlew assembleRelease
-   ```
-
-2. Install on device:
-   ```bash
-   adb install app/build/outputs/apk/release/app-release.apk
-   ```
-
-3. Grant root permissions when prompted
-
-## Usage
-
-### Basic MAC Change
-
-1. **Select Interface**: Choose the network interface (wlan0, eth0, etc.)
-2. **Enter MAC Address**: Type the new MAC address in format `XX:XX:XX:XX:XX:XX`
-3. **Choose Method**: Select execution method (A, B, or C)
-4. **Apply**: Tap "Apply MAC Change"
-5. **Verify**: Check the logs to confirm success
-
-### Generate Random MAC
-
-- Tap "Generate Random MAC" to create a valid random MAC address
-- The app ensures:
-  - Locally administered bit is set
-  - Multicast bit is cleared
-  - No broadcast MAC is generated
-
-### Restore Original MAC
-
-- Tap "Restore Original MAC" to revert to the saved original MAC
-- Original MAC is saved on first change and stored securely
-
-### View Logs
-
-- Recent operations are displayed in the logs section
-- Shows timestamp, interface, old/new MAC, and success status
-- Expandable logs show shell output and errors
-
-## MAC Modification Methods
-
-### Method A: ip link (Recommended)
+Run unit tests:
 ```bash
-ip link set dev wlan0 down
-ip link set dev wlan0 address XX:XX:XX:XX:XX:XX
-ip link set dev wlan0 up
+./gradlew test
 ```
 
-### Method B: ifconfig
+Run instrumented tests:
 ```bash
-ifconfig wlan0 down
-ifconfig wlan0 hw ether XX:XX:XX:XX:XX:XX
-ifconfig wlan0 up
+./gradlew connectedAndroidTest
 ```
 
-### Method C: sysfs
-```bash
-echo XX:XX:XX:XX:XX:XX > /sys/class/net/wlan0/address
-```
+## 🤝 Contributing
 
-## Permissions
+Contributions are welcome! Please follow these steps:
 
-The app requires the following permissions:
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-- `CHANGE_NETWORK_STATE` - Modify network configuration
-- `ACCESS_NETWORK_STATE` - Read network information
-- `CHANGE_WIFI_STATE` - Control WiFi
-- `ACCESS_WIFI_STATE` - Read WiFi information
-- `RECEIVE_BOOT_COMPLETED` - Auto-apply on boot
-- `POST_NOTIFICATIONS` - Show persistent notification
-- `READ_EXTERNAL_STORAGE` - Export logs
-- `WRITE_EXTERNAL_STORAGE` - Export logs
-- `QUERY_ALL_PACKAGES` - Detect system capabilities
+Please ensure your code follows the existing style and includes appropriate tests.
 
-## Database Schema
+## ⚠️ Important Disclaimers
 
-### mac_profiles
-- `id` (PK): Profile ID
-- `name`: Profile name
-- `interfaceName`: Target interface
-- `macAddress`: MAC to apply
-- `executionMethod`: A, B, or C
-- `autoApply`: Auto-apply on boot
-- `ssidTarget`: Optional SSID target
-- `createdAt`, `updatedAt`: Timestamps
+- **Root Requirement**: This application requires a rooted device and root access. Improper use may damage your device.
+- **Network Policies**: Changing MAC addresses may violate network terms of service or local regulations.
+- **Security**: Modifying network configuration carries inherent risks. Use responsibly and at your own risk.
+- **Compatibility**: Not all devices support MAC address modification due to kernel or driver restrictions.
 
-### mac_logs
-- `id` (PK): Log ID
-- `profileId` (FK): Associated profile
-- `interfaceName`: Interface name
-- `oldMac`, `newMac`: MAC addresses
-- `isSuccess`: Operation result
-- `executionTime`: Duration in ms
-- `stdout`, `stderr`: Command output
-- `timestamp`: Log timestamp
+## 📄 License
 
-### original_macs
-- `interfaceName` (PK): Interface name
-- `originalMac`: Original MAC address
-- `savedAt`: Save timestamp
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-### app_settings
-- `key` (PK): Setting key
-- `value`: Setting value
+## 🆘 Support
 
-## Compatibility Notes
+For support, bug reports, or feature requests, please open an issue on the GitHub repository.
 
-- **Android 10+**: WiFi MAC randomization is handled at framework level
-- **Kernel Restrictions**: Some kernels prevent MAC modification
-- **Driver Locking**: Some drivers lock MAC address
-- **SELinux**: May require permissive mode for some operations
-- **Reboot Reset**: Some devices reset MAC on reboot
+## 🙏 Acknowledgments
 
-## Known Limitations
-
-- Requires rooted device
-- May cause temporary network disconnection
-- Some networks may block spoofed MAC
-- Not guaranteed on all kernels/drivers
-- May violate network policies
-
-## Troubleshooting
-
-### Root Access Denied
-- Ensure device is properly rooted with Magisk or SuperSU
-- Grant root permissions when prompted
-- Check SELinux mode (may need permissive)
-
-### MAC Change Fails
-- Try different execution methods (A, B, C)
-- Check if BusyBox/iproute2 are available
-- Verify interface name is correct
-- Check device logs: `adb logcat | grep RootMAC`
-
-### Changes Revert After Reboot
-- Some devices reset MAC on reboot
-- Enable "Auto-apply on boot" in settings
-- Create a profile and enable auto-apply
-
-## Security Considerations
-
-- Root access is required and dangerous
-- This app can modify network configuration
-- May violate network policies or ToS
-- Use responsibly and legally
-- No warranty or liability
-
-## Distribution
-
-This app is **not compatible with Google Play Store** due to root requirements and MAC spoofing capabilities.
-
-**Recommended distribution:**
-- GitHub Releases
-- Direct APK download
-- F-Droid (if compliant)
-
-## License
-
-This project is provided as-is for educational and authorized use only.
-
-## Contributing
-
-Contributions are welcome! Please follow the existing code style and architecture patterns.
-
-## Support
-
-For issues and feature requests, please open an issue on the project repository.
-
-## Disclaimer
-
-**IMPORTANT**: This application modifies network configuration and may:
-- Violate network policies
-- Cause temporary disconnection
-- Be blocked by some networks
-- Not work on all devices
-- Require legal authorization to use
-
-**Users assume full responsibility for any consequences of using this application.**
+- Thanks to the Magisk and SuperSU teams for root solutions
+- Special thanks to the Android developer community for resources and documentation
+- Inspired by the need for privacy-focused networking tools on Android
 
 ---
 
-**Built with Kotlin, Jetpack Compose, and libsu**
+<p align="center">
+  <em>Made with ❤️ for the Android community</em>
+</p>
